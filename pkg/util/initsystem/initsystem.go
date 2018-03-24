@@ -86,6 +86,51 @@ func (sysd SystemdInitSystem) ServiceIsActive(service string) bool {
 	return false
 }
 
+// OpenRC Init system is the default init system on Gentoo and Alpine Linux.
+type OpenRcInitSystem struct{}
+
+func (openrc OpenRcInitSystem) ServiceStart(service string) error {
+	args := []string{service, "start"}
+	err := exec.Command("service", args...).Run()
+	return err
+}
+
+func (openrc OpenRcInitSystem) ServiceStop(service string) error {
+	args := []string{service, "stop"}
+	err := exec.Command("service", args...).Run()
+	return err
+}
+
+func (openrc OpenRcInitSystem) ServiceExists(service string) bool {
+	args := []string{service, "status"}
+	outBytes, _ := exec.Command("service", args...).Output()
+	output := string(outBytes)
+	if strings.Contains(output, "does not exist") {
+		return false
+	}
+	return true
+}
+
+func (openrc OpenRcInitSystem) ServiceIsEnabled(service string) bool {
+	args := []string{"show", "default"}
+	outBytes, _ := exec.Command("rc-update", args...).Output()
+	output := strings.TrimSpace(string(outBytes))
+	if strings.Contains(output, service) {
+		return true
+	}
+	return false
+}
+
+func (openrc OpenRcInitSystem) ServiceIsActive(service string) bool {
+	args := []string{service, "status"}
+	outBytes, _ := exec.Command("service", args...).Output()
+	output := string(outBytes)
+	if strings.Contains(output, "status: started") {
+		return true
+	}
+	return false
+}
+
 // WindowsInitSystem is the windows implementation of InitSystem
 type WindowsInitSystem struct{}
 
@@ -139,6 +184,11 @@ func GetInitSystem() (InitSystem, error) {
 	_, err := exec.LookPath("systemctl")
 	if err == nil {
 		return &SystemdInitSystem{}, nil
+	}
+	// Assume existence of openrc in path implies this is an OpenRC system:
+	_, err = exec.LookPath("openrc")
+	if err == nil {
+		return &OpenRcInitSystem{}, nil
 	}
 	_, err = exec.LookPath("wininit.exe")
 	if err == nil {
