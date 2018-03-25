@@ -17,7 +17,6 @@ limitations under the License.
 package dockershim
 
 import (
-	"context"
 	"fmt"
 	"net/http"
 	"sync"
@@ -26,6 +25,7 @@ import (
 	"github.com/blang/semver"
 	dockertypes "github.com/docker/docker/api/types"
 	"github.com/golang/glog"
+	"golang.org/x/net/context"
 
 	"k8s.io/api/core/v1"
 	runtimeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/runtime/v1alpha2"

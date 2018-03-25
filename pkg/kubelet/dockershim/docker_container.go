@@ -17,7 +17,6 @@ limitations under the License.
 package dockershim
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -28,6 +27,7 @@ import (
 	dockerfilters "github.com/docker/docker/api/types/filters"
 	dockerstrslice "github.com/docker/docker/api/types/strslice"
 	"github.com/golang/glog"
+	"golang.org/x/net/context"
 
 	runtimeapi "k8s.io/kubernetes/pkg/kubelet/apis/cri/runtime/v1alpha2"
 	"k8s.io/kubernetes/pkg/kubelet/dockershim/libdocker"

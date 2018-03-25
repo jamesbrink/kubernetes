@@ -17,7 +17,6 @@ limitations under the License.
 package stackdriver
 
 import (
-	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -28,6 +27,7 @@ import (
 	"k8s.io/kubernetes/test/e2e/framework"
 	"k8s.io/kubernetes/test/e2e/instrumentation/logging/utils"
 
+	"golang.org/x/net/context"
 	"golang.org/x/oauth2/google"
 	sd "google.golang.org/api/logging/v2beta1"
 	pubsub "google.golang.org/api/pubsub/v1"

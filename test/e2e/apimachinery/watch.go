@@ -191,7 +191,7 @@ func expectNoEvent(w watch.Interface, eventType watch.EventType, object runtime.
 }
 
 func waitForEvent(w watch.Interface, expectType watch.EventType, expectObject runtime.Object) (watch.Event, bool) {
-	stopTimer := time.NewTimer(1 * time.Minute)
+	stopTimer := time.NewTimer(10 * time.Second)
 	for {
 		select {
 		case actual := <-w.ResultChan():

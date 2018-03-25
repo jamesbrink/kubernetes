@@ -17,15 +17,14 @@ limitations under the License.
 package vsphere
 
 import (
-	"context"
 	"errors"
-	"strings"
-	"sync"
-
 	"github.com/vmware/govmomi/object"
 	"github.com/vmware/govmomi/vim25/types"
+	"golang.org/x/net/context"
 	"k8s.io/api/core/v1"
 	"k8s.io/kubernetes/test/e2e/framework"
+	"strings"
+	"sync"
 )
 
 type NodeMapper struct {

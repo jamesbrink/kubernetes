@@ -84,9 +84,9 @@ var _ = SIGDescribe("Services", func() {
 			valid/accessible endpoints (same port number for service and pods).
 	*/
 	framework.ConformanceIt("should serve a basic endpoint from pods ", func() {
+		// TODO: use the ServiceTestJig here
 		serviceName := "endpoint-test2"
 		ns := f.Namespace.Name
-		jig := framework.NewServiceTestJig(cs, serviceName)
 		labels := map[string]string{
 			"foo": "bar",
 			"baz": "blah",
@@ -97,12 +97,20 @@ var _ = SIGDescribe("Services", func() {
 			err := cs.CoreV1().Services(ns).Delete(serviceName, nil)
 			Expect(err).NotTo(HaveOccurred())
 		}()
-		ports := []v1.ServicePort{{
-			Port:       80,
-			TargetPort: intstr.FromInt(80),
-		}}
-		_, err := jig.CreateServiceWithServicePort(labels, ns, ports)
 
+		service := &v1.Service{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: serviceName,
+			},
+			Spec: v1.ServiceSpec{
+				Selector: labels,
+				Ports: []v1.ServicePort{{
+					Port:       80,
+					TargetPort: intstr.FromInt(80),
+				}},
+			},
+		}
+		_, err := cs.CoreV1().Services(ns).Create(service)
 		Expect(err).NotTo(HaveOccurred())
 
 		framework.ValidateEndpointsOrFail(cs, ns, serviceName, framework.PortsByPodName{})
@@ -141,10 +149,10 @@ var _ = SIGDescribe("Services", func() {
 			valid/accessible endpoints (different port number for pods).
 	*/
 	framework.ConformanceIt("should serve multiport endpoints from pods ", func() {
+		// TODO: use the ServiceTestJig here
 		// repacking functionality is intentionally not tested here - it's better to test it in an integration test.
 		serviceName := "multi-endpoint-test"
 		ns := f.Namespace.Name
-		jig := framework.NewServiceTestJig(cs, serviceName)
 
 		defer func() {
 			err := cs.CoreV1().Services(ns).Delete(serviceName, nil)
@@ -157,19 +165,27 @@ var _ = SIGDescribe("Services", func() {
 		svc2port := "svc2"
 
 		By("creating service " + serviceName + " in namespace " + ns)
-		ports := []v1.ServicePort{
-			{
-				Name:       "portname1",
-				Port:       80,
-				TargetPort: intstr.FromString(svc1port),
+		service := &v1.Service{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: serviceName,
 			},
-			{
-				Name:       "portname2",
-				Port:       81,
-				TargetPort: intstr.FromString(svc2port),
+			Spec: v1.ServiceSpec{
+				Selector: labels,
+				Ports: []v1.ServicePort{
+					{
+						Name:       "portname1",
+						Port:       80,
+						TargetPort: intstr.FromString(svc1port),
+					},
+					{
+						Name:       "portname2",
+						Port:       81,
+						TargetPort: intstr.FromString(svc2port),
+					},
+				},
 			},
 		}
-		_, err := jig.CreateServiceWithServicePort(labels, ns, ports)
+		_, err := cs.CoreV1().Services(ns).Create(service)
 		Expect(err).NotTo(HaveOccurred())
 		port1 := 100
 		port2 := 101

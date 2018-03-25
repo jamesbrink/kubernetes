@@ -18,7 +18,6 @@ limitations under the License.
 package envelope
 
 import (
-	"context"
 	"fmt"
 	"net"
 	"net/url"
@@ -27,6 +26,8 @@ import (
 	"github.com/golang/glog"
 
 	"google.golang.org/grpc"
+
+	"golang.org/x/net/context"
 
 	kmsapi "k8s.io/apiserver/pkg/storage/value/encrypt/envelope/v1beta1"
 )

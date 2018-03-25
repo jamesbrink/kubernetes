@@ -255,10 +255,9 @@ func (vm *volumeManager) GetMountedVolumesForPod(podName types.UniquePodName) co
 	podVolumes := make(container.VolumeMap)
 	for _, mountedVolume := range vm.actualStateOfWorld.GetMountedVolumesForPod(podName) {
 		podVolumes[mountedVolume.OuterVolumeSpecName] = container.VolumeInfo{
-			Mounter:             mountedVolume.Mounter,
-			BlockVolumeMapper:   mountedVolume.BlockVolumeMapper,
-			ReadOnly:            mountedVolume.VolumeSpec.ReadOnly,
-			InnerVolumeSpecName: mountedVolume.InnerVolumeSpecName,
+			Mounter:           mountedVolume.Mounter,
+			BlockVolumeMapper: mountedVolume.BlockVolumeMapper,
+			ReadOnly:          mountedVolume.VolumeSpec.ReadOnly,
 		}
 	}
 	return podVolumes

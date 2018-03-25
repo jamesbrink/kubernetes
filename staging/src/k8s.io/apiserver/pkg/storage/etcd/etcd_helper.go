@@ -17,7 +17,6 @@ limitations under the License.
 package etcd
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"path"
@@ -26,6 +25,7 @@ import (
 
 	etcd "github.com/coreos/etcd/client"
 	"github.com/golang/glog"
+	"golang.org/x/net/context"
 
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/conversion"

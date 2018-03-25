@@ -13,6 +13,7 @@ go_test(
     deps = [
         "//vendor/github.com/coreos/etcd/integration:go_default_library",
         "//vendor/github.com/coreos/etcd/pkg/transport:go_default_library",
+        "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/api/testing:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/apis/meta/v1:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/runtime:go_default_library",
@@ -36,6 +37,7 @@ go_library(
         "//vendor/github.com/coreos/etcd/client:go_default_library",
         "//vendor/github.com/coreos/etcd/clientv3:go_default_library",
         "//vendor/github.com/coreos/etcd/pkg/transport:go_default_library",
+        "//vendor/golang.org/x/net/context:go_default_library",
         "//vendor/k8s.io/apimachinery/pkg/util/net:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage:go_default_library",
         "//vendor/k8s.io/apiserver/pkg/storage/etcd:go_default_library",

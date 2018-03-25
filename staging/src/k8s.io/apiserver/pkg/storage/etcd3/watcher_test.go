@@ -17,7 +17,6 @@ limitations under the License.
 package etcd3
 
 import (
-	"context"
 	"fmt"
 	"reflect"
 	"sync"
@@ -26,6 +25,7 @@ import (
 
 	"github.com/coreos/etcd/clientv3"
 	"github.com/coreos/etcd/integration"
+	"golang.org/x/net/context"
 
 	apitesting "k8s.io/apimachinery/pkg/api/testing"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"

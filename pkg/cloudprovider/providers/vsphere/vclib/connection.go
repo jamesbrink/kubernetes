@@ -17,7 +17,6 @@ limitations under the License.
 package vclib
 
 import (
-	"context"
 	"fmt"
 	neturl "net/url"
 	"sync"
@@ -26,6 +25,7 @@ import (
 	"github.com/vmware/govmomi"
 	"github.com/vmware/govmomi/session"
 	"github.com/vmware/govmomi/vim25"
+	"golang.org/x/net/context"
 )
 
 // VSphereConnection contains information for connecting to vCenter

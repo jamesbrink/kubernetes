@@ -18,7 +18,6 @@ package libdocker
 
 import (
 	"bytes"
-	"context"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -36,6 +35,7 @@ import (
 	dockerapi "github.com/docker/docker/client"
 	dockermessage "github.com/docker/docker/pkg/jsonmessage"
 	dockerstdcopy "github.com/docker/docker/pkg/stdcopy"
+	"golang.org/x/net/context"
 )
 
 // kubeDockerClient is a wrapped layer of docker client for kubelet internal use. This layer is added to:
