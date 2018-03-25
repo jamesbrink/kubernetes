@@ -738,6 +738,7 @@ ADVANCED_AUDIT_WEBHOOK_THROTTLE_BURST: $(yaml-quote ${ADVANCED_AUDIT_WEBHOOK_THR
 ADVANCED_AUDIT_WEBHOOK_INITIAL_BACKOFF: $(yaml-quote ${ADVANCED_AUDIT_WEBHOOK_INITIAL_BACKOFF:-})
 GCE_API_ENDPOINT: $(yaml-quote ${GCE_API_ENDPOINT:-})
 GCE_GLBC_IMAGE: $(yaml-quote ${GCE_GLBC_IMAGE:-})
+ENABLE_NODE_JOURNAL: $(yaml-quote ${ENABLE_NODE_JOURNAL:-false})
 PROMETHEUS_TO_SD_ENDPOINT: $(yaml-quote ${PROMETHEUS_TO_SD_ENDPOINT:-})
 PROMETHEUS_TO_SD_PREFIX: $(yaml-quote ${PROMETHEUS_TO_SD_PREFIX:-})
 ENABLE_PROMETHEUS_TO_SD: $(yaml-quote ${ENABLE_PROMETHEUS_TO_SD:-false})
@@ -1292,6 +1293,9 @@ minVersion = version.LooseVersion("1.3.0")
 required = [ "alpha", "beta", "core" ]
 data = json.loads(sys.argv[1])
 rel = data.get("Google Cloud SDK")
+if "CL @" in rel:
+  print("Using dev version of gcloud: %s" %rel)
+  exit(0)
 if rel != "HEAD" and version.LooseVersion(rel) < minVersion:
   print("gcloud version out of date ( < %s )" % minVersion)
   exit(1)
@@ -1746,7 +1750,7 @@ function create-subnetworks() {
       --secondary-range "services-default=${SERVICE_CLUSTER_IP_RANGE}"
     echo "Created subnetwork ${IP_ALIAS_SUBNETWORK}"
   else
-    if ! echo ${subnet} | grep --quiet secondaryIpRanges ${subnet}; then
+    if ! echo ${subnet} | grep --quiet secondaryIpRanges; then
       echo "${color_red}Subnet ${IP_ALIAS_SUBNETWORK} does not have a secondary range${color_norm}"
       exit 1
     fi
